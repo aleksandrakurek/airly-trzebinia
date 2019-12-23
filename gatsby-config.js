@@ -1,8 +1,18 @@
+// const NearestInstallationsTypes = {
+// data: [{
+//   alternative_id: "String",
+//   attributes: {
+//     name: "String",
+//     points: 1,
+//   },
+// }],
+// }
+
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `Airly Trzebinia`,
+    description: `Site for monitoring air quality in Trzebinia`,
+    author: `@kurekaleksandra`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -27,30 +37,33 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
-    `gatsby-plugin-typescript`,
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `pages`,
-        path: `${__dirname}/src/pages/`,
-      },
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `data`,
-        path: `${__dirname}/src/data/`,
-        ignore: [`**/\.*`], // ignore files starting with a dot
-      },
-    },
     {
       resolve: `gatsby-plugin-styled-components`,
       options: {
         // Add any options here
       },
     },
-    // this (optional) plugin enables Progressive Web App + Offline functionality
-    // To learn more, visit: https://gatsby.dev/offline
-    // `gatsby-plugin-offline`,
+    {
+      resolve: "gatsby-source-apiserver",
+      options: {
+        typePrefix: "airlyTrzebinia",
+        url: `https://developer.airly.eu/v2/`,
+        method: "get",
+
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+          Accept: "application/json",
+          "apikey": "MOTFHmkBF70beyzogsHzyBpwkeigf5W1"
+        },
+        entitiesArray: [
+          {
+            url: `https://developer.airly.eu/v2/installations/nearest?lat=50.062006&lng=19.940984&maxDistanceKM=3&maxResults=1`,
+            method: "get",
+            name: `NearestInstallations`,
+            // schemaType: NearestInstallationsTypes,
+          },
+        ],
+      },
+    },
   ],
 }
